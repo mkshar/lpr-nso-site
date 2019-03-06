@@ -88,13 +88,25 @@ div.card-back
 	width: 85.60mm;
 	margin: auto;
 	height: 53.98mm;
-	background-color: white;
 	border-radius: 3.48mm;
 	font-size: 4.5mm;
 	font-family: "ReformaGroteskDemiC";
 	line-height: 4.5mm;
 	border: 1px solid black;
 	background-color: black;
+}
+
+div.card-back-negative
+{
+	width: 85.60mm;
+	margin: auto;
+	height: 53.98mm;
+	border-radius: 3.48mm;
+	font-size: 4.5mm;
+	font-family: "ReformaGroteskDemiC";
+	line-height: 4.5mm;
+	border: 1px solid black;
+	background-color: white;
 }
 
 div.card-back-content
@@ -180,9 +192,22 @@ div.vcard
 	background-color: white;
 }
 
+div.vcard-negative
+{
+	margin-top: 0.0mm;
+	/*border: solid 1mm white;*/
+	background-color: white;
+}
+
 div.url
 {
 	color: white;
+	text-align: center;
+}
+
+div.url-negative
+{
+	color: black;
 	text-align: center;
 }
 

@@ -138,7 +138,7 @@ var g_year = new Date().getFullYear();
 var g_card_id = 9999;
 var g_card_registered = false;
 var g_format_version = "0.3";
-var g_application_version = "0.1.3";
+var g_application_version = "0.2.0";
 
 function bootstrap()
 {
@@ -372,7 +372,7 @@ function view()
 	var status          = get_selector_value( "status" );
 	var card_type       = get_selector_value( "card_type" );
 
-	var card = new Card( g_division, g_card_id, get_url(), g_year );
+	var card = new Card( g_division, g_card_id, get_url(), g_year, g_photo, g_photo_mime_type );
 	var qr;
 	
 	if( card_type == "url" )
@@ -408,7 +408,7 @@ function view()
 		qr = vcard.generate();
 	}
 	
-	make_card( first_name, last_name, card, status, qr, transliteration, $( "card-face" ), $( "card-back" ), false, null );
+	make_card( first_name, last_name, card, status, qr, transliteration, $( "card-face" ), $( "card-back" ), $( "card-back-negative" ), false, null );
 	
 	app.show_plane( "view" );
 }
@@ -470,7 +470,7 @@ function save()
 	
 	const encoding = "Base64";
 	const generator = "nsk-shar-js/0.4";
-	$( "card_data_saver" ).value = encode( obj, encoding, g_format_version, generator );
+	$( "card_data_saver" ).value = encode( obj, encoding, g_format_version, generator, g_photo, g_photo_mime_type );
 	
 	app.show_plane( "save" );
 }
@@ -568,4 +568,39 @@ function read()
 	alert( "Информация о карте успешно загружена." );
 	
 	app.show_plane( "edit" );
+}
+
+function uint8_to_string( uint8_array ){
+	const chunk_size = 0x8000;
+	var res = [];
+	for( var i = 0; i < uint8_array.length; i+= chunk_size )
+		res.push( String.fromCharCode.apply( null, uint8_array.subarray( i, i + chunk_size ) ) );
+	return res.join( "" );
+}
+
+var g_photo;
+var g_photo_mime_type;
+function load_photo()
+{
+	var files = $('photo').files;
+	if( files.length < 1 )
+		return;
+	
+	var file = files[ 0 ];
+	
+	var reader = new FileReader();
+	reader.addEventListener
+	(
+		"loadend", function()
+		{
+			var buffer = reader.result;
+			var view = new Uint8Array( buffer );
+			//log( "view.length = " + view.length );
+			//log( view );
+			//log( btoa( uint8_to_string( view ) ) );
+			g_photo_mime_type = file.type;
+			g_photo = btoa( uint8_to_string( view ) )
+		}
+	);
+	reader.readAsArrayBuffer( file );
 }

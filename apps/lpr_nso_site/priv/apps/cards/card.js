@@ -42,12 +42,13 @@ function make_face( first_name, last_name, id, status, transliteration_variant )
 	return res;
 }
 
-function make_back( need_back, qr_id, page )
+function make_back( need_back, qr_id, page, negative, photo, photo_mime_type, first_name, last_name, transliteration_variant )
 {
+	var variant = negative ? "-negative" : "";
 	var res =
 		div
 		(
-			"card-back",
+			"card-back" + variant,
 			div
 			(
 				"card-back-content",
@@ -56,13 +57,13 @@ function make_back( need_back, qr_id, page )
 					"width=\"100%\"",
 					tr
 					(
-						td( "width=\"50%\"", "&nbsp;" ) +
-						td( "width=\"50%\"", need_back ? divi( "vcard", qr_id ) : "&nbsp;" )
+						td( "width=\"50%\" align=\"center\"", photo ? "<img src=\"data:" + photo_mime_type + ";base64," + photo + "\" style=\"width: 30mm; height: 40mm\">": "&nbsp;" ) +
+						td( "width=\"50%\"", need_back ? divi( "vcard" + variant, qr_id ) : "&nbsp;" )
 					) +
 					tr
 					(
-						td( "&nbsp;" ) +
-						td( need_back ? div( "url", page ) : "&nbsp;" )
+						td( "align=\"center\"", photo ? make_non_empty( transliterate( first_name, transliteration_variant ) ) + "<br/>" + make_non_empty( transliterate( last_name,  transliteration_variant ) ) : "&nbsp;" ) +
+						td( need_back ? div( "url" + variant, page ) : "&nbsp;" )
 					)
 				)
 			)
@@ -186,8 +187,10 @@ function convert_to_pid( hex, min )
 	return res;
 }
 
-function Card( division, id, page, year )
+function Card( division, id, page, year, photo, mime_type )
 {
+	this.photo = photo;
+	this.mime_type = mime_type;
 	if( !year )
 		year = new Date().getFullYear();
 	
@@ -219,7 +222,7 @@ Division.prototype.make_card = function( local_person_id )
 	return new Card( this, local_person_id );
 }
 
-function make_card( first_name, last_name, card, status, qr, transliteration_variant, face_container, back_container, append, registry )
+function make_card( first_name, last_name, card, status, qr, transliteration_variant, face_container, back_container, back_negative_container, append, registry )
 {
 	var qr_id = "qr_" + card.uid;
 	status = status.toUpperCase();
@@ -242,6 +245,8 @@ function make_card( first_name, last_name, card, status, qr, transliteration_var
 	{
 		face_container.innerHTML = make_face( first_name, last_name, card.uid, status, transliteration_variant );
 		back_container.innerHTML = make_back( qr, qr_id, card.text );
+		if( back_negative_container )
+			back_negative_container.innerHTML = make_back( qr, qr_id + "negative", card.text, true, card.photo, card.mime_type, first_name, last_name, transliteration_variant );
 	}
 
 	if( registry )
@@ -262,5 +267,18 @@ function make_card( first_name, last_name, card, status, qr, transliteration_var
 				colorLight   : "#ffffff",
 			}
 		).makeCode( qr );
+		if( back_negative_container )
+			new QRCode
+			(
+				document.getElementById( qr_id + "negative" ),
+				{
+					width  : size,
+					height : size,
+					useSVG : true,
+					correctLevel : 1,
+					colorDark    : "#000000",
+					colorLight   : "#ffffff",
+				}
+			).makeCode( qr );
 	}
 }

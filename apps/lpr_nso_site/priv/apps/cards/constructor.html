@@ -94,23 +94,24 @@
 			
 			<div class="spacer"/>&nbsp;</div>
 			<div class="info">
+				<input type="file" id="photo" name="avatar" accept="image/png, image/jpeg" oninput="load_photo();">
+			</div>
+       
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
 				<div>
-					Имя:
+					Имя кириллицей:
 				</div>
 				<div>
 					<input id="first_name" type="text" value="" onkeyup="update_first_name();"/>
 				</div>
 
 				<div>
-					Фамилия:
+					Фамилия кириллицей:
 				</div>
 				<div>
 					<input id="last_name" type="text" value="" onkeyup="update_last_name();"/>
-				</div>
-				<div class="note">
-					Используйте латиницу, если Вас
-					<br/>
-					не устраивает ни один из вариантов автоматической транслитерации.
 				</div>
 			</div>
     
@@ -133,6 +134,29 @@
 						<div class="note">
 							Юрий Яковлев &rarr; IURII IAKOVLEV.
 						</div>
+					</div>
+					<div>
+						<input type="radio" name="transliteration" id="manual" value="manual"/>
+						<label for="manual">Вручную</label>
+					</div>
+				</div>
+			</div>
+			
+			<div id="lat_data">
+				<div class="spacer"/>&nbsp;</div>
+				<div class="info">
+					<div>
+						Имя латиницей:
+					</div>
+					<div>
+						<input id="first_name_lat" type="text" value="" onkeyup="update_first_name();"/>
+					</div>
+
+					<div>
+						Фамилия латиницей:
+					</div>
+					<div>
+						<input id="last_name_lat" type="text" value="" onkeyup="update_last_name();"/>
 					</div>
 				</div>
 			</div>
@@ -384,7 +408,7 @@
 			</table>
 			<div class="spacer"/>&nbsp;</div>
 
-			<div class="info" id="vcard_content">
+			<div class="info">
 				<div class="centered">
 					Лицевая сторона:
 				</div>
@@ -394,13 +418,23 @@
 				<div>&nbsp;</div>
 			</div>
 			<div class="spacer"/>&nbsp;</div>
-			<div class="info" id="vcard_content">
+			<div class="info">
 				<div class="centered">
 					Оборотная сторона:
 				</div>
 				<div class="spacer"/>&nbsp;</div>
 					
 				<div id="card-back">&nbsp;</div>
+				<div>&nbsp;</div>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<div class="centered">
+					Оборотная сторона (негатив):
+				</div>
+				<div class="spacer"/>&nbsp;</div>
+					
+				<div id="card-back-negative">&nbsp;</div>
 				<div>&nbsp;</div>
 			</div>
 			<div class="spacer"/>&nbsp;</div>
