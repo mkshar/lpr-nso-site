@@ -1,0 +1,67 @@
+-module( xlib_bcd ).
+-author( "Mikhail Sharoglazov <sharoglazov@sibext.com>" ).
+-version( "0.1" ). % Do NOT set -vsn attribute! It is used to detect code changes by MD5-hashing the module's AST.
+
+-export( [ bcd_to_int/1, bcd_to_list/1, bcd_to_list/2 ] ).
+
+-include( "eunit" ).
+
+dec_digit_to_int( $0 ) -> 0;
+dec_digit_to_int( $1 ) -> 1;
+dec_digit_to_int( $2 ) -> 2;
+dec_digit_to_int( $3 ) -> 3;
+dec_digit_to_int( $4 ) -> 4;
+dec_digit_to_int( $5 ) -> 5;
+dec_digit_to_int( $6 ) -> 6;
+dec_digit_to_int( $7 ) -> 7;
+dec_digit_to_int( $8 ) -> 8;
+dec_digit_to_int( $9 ) -> 9.
+
+bcd_to_int( Bin ) ->
+
+	bcd_to_int( Bin, 0 )
+.
+
+bcd_to_int( <<>>, A ) ->
+
+	A
+;
+
+bcd_to_int( << BCD_digit /integer, Rest /binary >>, A ) ->
+
+	bcd_to_int( Rest, A * 10 + dec_digit_to_int( BCD_digit ) )
+.
+
+bcd_to_list( Bin, Unit_size ) ->
+
+	lists:reverse( bcd_to_list_internal( Unit_size, Bin, [] ) )
+.
+
+bcd_to_list( Bin ) ->
+
+	lists:reverse( bcd_to_list_internal( Bin, [] ) )
+.
+
+bcd_to_list_internal( <<>>, A ) ->
+
+	A
+;
+
+bcd_to_list_internal( << Hex: 2 /binary, Rest /binary >>, A ) ->
+
+	bcd_to_list_internal( Rest, [ bcd_to_int( Hex ) | A ] )
+.
+
+bcd_to_list_internal( _Unit_size, <<>>, A ) ->
+
+	A
+;
+
+bcd_to_list_internal( Unit_size, Bin, A ) ->
+
+	<< Hex: Unit_size /binary, Rest /binary >> = Bin,
+
+	bcd_to_list_internal( Unit_size, Rest, [ bcd_to_int( Hex ) | A ] )
+.
+
+%EOF

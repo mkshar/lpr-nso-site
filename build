@@ -1,0 +1,3 @@
+#!/bin/bash
+chmod +x mad
+./mad deps compile bundle script lpr_nso_site

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#erl -noshell -sname ness_server_stopper -eval '{ ok, Hostname } = inet:gethostname(), rpc:call( list_to_atom( "ness_server@" ++ Hostname ), init, stop, [])' -s init stop
+escript stop.escript

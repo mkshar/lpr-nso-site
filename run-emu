@@ -1,0 +1,2 @@
+#!/bin/bash
+erl -pz apps/ness_cloud_common/ebin/ -pz apps/xlib/ebin/

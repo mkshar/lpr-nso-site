@@ -1,0 +1,103 @@
+<html lang="ru">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<script type="text/javascript" src="./deps/lz-string/lz-string.js"></script>
+		<script type="text/javascript" src="./util.js"></script>
+		<script type="text/javascript" src="./codec.js"></script>
+		
+		<title>Codec</title>
+		
+		<script>
+			var g_format_version = "0.3";
+		
+			function do_decode()
+			{
+				var o = JSON.parse( decode( $( "initial" ).value ) );
+				$( "decoded" ).value = JSON.stringify( o.contents, null, 0 );
+				$( "envelop" ).innerHTML = JSON.stringify( o.envelop, null, 0 );
+			}
+			function do_encode()
+			{
+				const encoding = "Base64";
+				const generator = "nsk-js/0.4";
+				const format_version = "0.3";
+				$( "encoded" ).value = encode( JSON.parse( $( "decoded" ).value ), encoding, format_version, generator )
+			}
+			function do_copy()
+			{
+				$( "encoded" ).select();
+				document.execCommand( "copy" );
+			}
+			function do_clone()
+			{
+				$( "initial" ).value = $( "encoded" ).value;
+			}
+			function do_clear()
+			{
+				$( "initial" ).value = "";
+			}
+		</script>
+		
+		<style>
+		</style>
+
+	</head>
+	<body>
+
+		<table border="1">
+			<tr>
+				<td>
+					Initial:
+				</td>
+				<td>
+					Encoded:
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="initial" rows="23" cols="60" oninput="$('decoded').value='';$('envelop').innerHTML='';$('encoded').value='';do_decode();"></textarea>
+				</td>
+				<td>
+					<textarea id="encoded" rows="23" cols="60"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button onclick="do_decode();">Decode</button>
+					<button onclick="do_clear();">Clear</button>
+				</td>
+				<td>
+					<button onclick="do_clone();">Copy to Initial</button>
+					<button onclick="do_copy();">Copy to Clipboard</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					Decoded:
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div id="envelop">&nbsp;</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<textarea id="decoded" rows="16" cols="120" oninput="$('encoded').value='';"></textarea>
+					<br/>
+					<button onclick="do_encode();">Encode</button>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+	
+		<script>
+			$( "encoded" ).value="";
+			$( "decoded" ).value="";
+			$( "envelop" ).innerHTML = "";
+		</script>
+
+</html>
+

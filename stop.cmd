@@ -1,0 +1,1 @@
+escript stop.escript

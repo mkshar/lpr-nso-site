@@ -1,0 +1,210 @@
+html
+{
+	color: #000000;
+	background: #FFFFFF;
+	font-family: Verdana, Arial;
+	overflow-y: scroll;
+}
+
+div.webapp-plane
+{
+	display: none;
+	text-align: center;
+}
+
+/* CSS Reset */
+*, *:after, *:before
+{
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+table.header
+{
+	-moz-border-top-left-radius:    4px;
+	-webkit-border-top-left-radius: 4px;
+	border-top-left-radius:         4px;
+	-moz-border-bottom-left-radius:    4px;
+	-webkit-border-bottom-left-radius: 4px;
+	border-bottom-left-radius:         4px;
+	
+	border-collapse: collapse;
+	text-align: center;
+	
+	display: inline-block;
+
+	text-decoration: none;
+	/*text-shadow: 0px 1px 0px #3d768a;*/
+	
+	/*border-color:            #2785BF;*/
+	color: white;
+	background-color: #2785BF; /*#599bb3;*/
+	
+	border: 0px solid #2785BF;
+	vertical-align: middle;
+	font-weight: bold;
+}
+table.header tr
+{
+	text-align: center;
+}
+table.header tr td.button
+{
+	width: 50pt;
+}
+table.header tr td.title
+{
+	text-align: left;
+	/*padding-left: 18pt;*/
+	text-indent: 18pt;
+	text-transform: uppercase;
+	width: 270pt;
+	font-family: Verdana, Arial;
+	font-size: 18pt;
+}
+table.location td
+{
+	text-align: center;
+}
+
+div.info
+{
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+	border-radius:         4px;
+	
+	display: inline-block;
+
+	text-decoration: none;
+	/*text-shadow: 0px 1px 0px #3d768a;*/
+	
+	/*border-color:            #2785BF;*/
+	color: white;
+	background-color: #2785BF; /*#599bb3;*/
+	
+	border: 0px solid #2785BF;
+	text-align: left;
+	vertical-align: middle;
+	padding: 4pt;
+	width: 320pt;
+	
+	font-weight: bold;
+}
+div.warning
+{
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+	border-radius:         4px;
+	
+	display: inline-block;
+
+	text-decoration: none;
+	color: white;
+	background-color: red;
+	
+	border: 1px solid red;
+	text-align: center;
+	vertical-align: middle;
+	padding: 4pt;
+	width: 320pt;
+	
+	font-weight: bold;
+	padding: 7px 0px 6px 0px;
+}
+
+div.info a { color: white; }
+div.info a:visited { color: white; }
+
+div.title
+{
+	display: inline-block;
+	font-family: Verdana, Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 25pt;
+}
+
+/* https://www.bestcssbuttongenerator.com */
+button
+{
+	text-transform: uppercase;
+	
+	-moz-border-radius:    4px;
+	-webkit-border-radius: 4px;
+	border-radius:         4px;
+	
+	display: inline-block;
+	cursor: pointer;
+
+	font-family: Verdana, Arial;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 13px 32px;
+	text-decoration: none;
+	/*text-shadow: 0px 1px 0px #3d768a;*/
+	
+	width: 320pt;
+	
+	color:            #ffffff;
+	border-color:     #ffffff;
+	background-color: #2785BF; /*#599bb3;*/
+	
+	border: 2px solid black;
+}
+button:hover  { background-color: #419FD9; /*#408c99;*/ }
+
+button.main
+{
+	width: 50pt;
+	font-size: 30pt;
+	display: inline-block;
+	font-weight: normal;
+	padding: 0;
+}
+
+button.location
+{
+	width: 148pt;
+	padding: 5px 0;
+	margin: 4px 0;
+}
+
+button.info { padding: 6pt 0pt 8pt 0pt; }
+button.back { padding: 8pt 0pt 6pt 0pt; }
+
+div.spacer { font-size: 2px; }
+div.contact { margin-left: 6pt; font-size: 80%; font-weight: normal; }
+table.contacts { font-size: 80%; font-weight: normal; color: white; }
+table.contacts td.type { text-align: right; }
+textarea
+{
+	width: 100%;
+	font-size: 9pt;
+	border-style: solid;
+	font-family: monospace;
+}
+
+/*
+	http://xahlee.info/comp/unicode_arrows.html
+	https://www.toptal.com/designers/htmlarrows/symbols/
+	
+	https://css-tricks.com/textarea-tricks/
+*/
+
+input[ type = text  ] { font-size: 14pt; width: 100%; border: 2px; }
+input[ type = checkbox ] { width: 14pt; height: 14pt; }
+input[ type = radio ] { width: 14pt; height: 14pt; font-size: 14pt; }
+label { font-size: 14pt; }
+
+div.input { text-indent: 14pt; }
+div.note  { text-indent: 0; padding-left: 33pt; font-size: 12pt; font-style: italic; font-weight: normal; color: white; }
+
+hr { color: white; }
+
+table.vcard-field { width: 100%; color: white; font-weight: bold; }
+table.vcard-field td.left  { text-align: left;  }
+table.vcard-field td.right { text-align: right; }
+
+*.centered { text-align: center; }

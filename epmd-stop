@@ -1,0 +1,6 @@
+#!/bin/bash
+
+epmd -kill
+
+# If need to kill when names list is not empty, start EPMD using the following command:
+# epmd -daemon -relaxed_command_check

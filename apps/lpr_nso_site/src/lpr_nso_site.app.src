@@ -1,0 +1,25 @@
+{
+	application,
+	lpr_nso_site,
+	[
+		{ description, "" },
+		{ vsn, "0.1" },
+		{ modules, [] },
+		{ registered, [ lpr_nso_site_sup ] },
+		{ applications,
+			[
+				kernel,
+				stdlib,
+				crypto,
+				cowboy,
+				jsone,
+				compiler,
+				lager,
+				syntax_tools,
+				ssl
+			]
+		},
+		{ mod, { lpr_nso_site_app, [] } },
+		{ env, [] }
+	]
+}.

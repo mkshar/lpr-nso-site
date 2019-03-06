@@ -1,0 +1,13 @@
+-ifndef( EXCLUDE_LAGER ).
+
+	-compile( [ { parse_transform, lager_transform } ] ).
+
+	-define( START_LAGER(), lager:start() ).
+
+-else.
+
+	-define( START_LAGER(), do_nothing ).
+
+-endif.
+
+%EOF

@@ -1,0 +1,5 @@
+-ifndef( EXCLUDE_TESTS ).
+	-include_lib( "eunit/include/eunit.hrl" ).
+-endif.
+
+%EOF

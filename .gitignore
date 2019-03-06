@@ -1,0 +1,9 @@
+deps
+ebin/*.beam
+log
+*.log
+*.dump
+*.beam
+*.app
+.applist
+.idea

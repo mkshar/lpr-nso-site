@@ -1,0 +1,415 @@
+<html lang="ru">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		
+		<script type="text/javascript" src="./deps/qrcode/qrcode.js"></script>
+		<script type="text/javascript" src="./transliteration.js"></script>
+		<script type="text/javascript" src="./deps/lz-string/lz-string.min.js"></script>
+		<script type="text/javascript" src="./util.js"></script>
+		<script type="text/javascript" src="./card.js"></script>
+		<script type="text/javascript" src="./codec.js"></script>
+		
+		<script type="text/javascript" src="./constructor.js"></script>
+		
+		<link rel="stylesheet" href="./card.css">
+		<link rel="stylesheet" href="./constructor.css">
+		
+		
+		<title>Конструктор партийных билетов (карт сторонника) v$(VERSION)</title>
+
+	</head>
+	<body>
+
+		<div class="webapp-plane" id="init">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<!--<button class="main info" onclick="app.show_plane( 'info' );">&#x1F6C8;</button>-->
+						<button class="main info" onclick="app.show_plane( 'info' );"><img src="./info.png"/ width="32" height="32"></button>
+					</td>
+					<td class="title">Конструктор карт</td>
+				</tr>
+			</table>
+			<div class="spacer"/>&nbsp;</div>
+			<button onclick="app.show_plane( 'load' );">Загрузить</button>
+			<div class="spacer"/>&nbsp;</div>
+			<button onclick="app.show_plane( 'edit' );">Редактировать</button>
+		</div>
+		
+		<div class="webapp-plane" id="info">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<button class="main back" onclick="back();"><img src="./back.png"/ width="32" height="32"><!--&#x1F870;--></button>
+					</td>
+					<td class="title">Справка</td>
+				</tr>
+			</table>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Приложение: Конструктор карт
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Версия: <span class="webapp-version-id"/>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Разработчик: РО ЛПР НСО
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Контакты для обратной связи:
+				<table class="contacts" width="100%">
+					<tr class="contact"><td class="type">Telegram:</td><td>@<a href="tg://resolve?domain=m_shar">m_shar</a> (<a href="https://t.me/m_shar">https://t.me/m_shar</a>)</td></tr>
+					<tr class="contact"><td class="type">e-mail:</td><td><a href="mailto:mikhail.sharoglazov@gmail.com?subject=LPR%20Card">mikhail.sharoglazov@gmail.com</a></td></tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="webapp-plane" id="edit">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<button class="main back" onclick="back();"><img src="./back.png"/ width="32" height="32"></button>
+					</td>
+					<td class="title">Редактор</td>
+				</tr>
+			</table>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Код/поддомен регистратора: <span id="emitent-code"/>54</span>/<span id="emitent-domain"/>nso</span>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Год выпуска: <span id="card-year"/>2019</span>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Номер карты: <span id="card-serial"/>0001</span> (<span id="card-status">зарегистрирован</span>)
+			</div>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<div>
+					Имя:
+				</div>
+				<div>
+					<input id="first_name" type="text" value="" onkeyup="update_first_name();"/>
+				</div>
+
+				<div>
+					Фамилия:
+				</div>
+				<div>
+					<input id="last_name" type="text" value="" onkeyup="update_last_name();"/>
+				</div>
+				<div class="note">
+					Используйте латиницу, если Вас
+					<br/>
+					не устраивает ни один из вариантов автоматической транслитерации.
+				</div>
+			</div>
+    
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<div>
+					Вариант транслитерации:
+				</div>
+				<div class="input">
+					<div>
+						<input type="radio" name="transliteration" id="bank" value="bank" checked/>
+						<label for="bank">Банковский (как на платёжных картах)</label>
+						<div class="note">
+							Юрий Яковлев &rarr; YURIY YAKOVLEV.
+						</div>
+					</div>
+					<div>
+						<input type="radio" name="transliteration" id="passport" value="passport"/>
+						<label for="passport">Паспортный (по правилам МВД РФ)</label>
+						<div class="note">
+							Юрий Яковлев &rarr; IURII IAKOVLEV.
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<div>
+					Статус:
+				</div>
+				<div class="input">
+					<div>
+						<input type="radio" name="status" id="member" value="member" checked/>
+						<label for="member">Член партии</label>
+					</div>
+					<div>
+						<input type="radio" name="status" id="supporter" value="supporter"/>
+						<label for="supporter">Сторонник</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<div>
+					Оформление оборотной стороны:
+				</div>
+				<div class="input">
+					<div>
+						<input type="radio" name="card_type" id="empty" value="empty" onclick="select_card_type();" checked/>
+						<label for="empty">Без печати</label>
+						<div class="note">
+							<b>РЕКОМЕНДУЕМЫЙ</b> вариант!
+							<br/>
+							Для массового выпуска карт обратную сторону <b>крайне желательно</b> оставлять пустой.
+							<hr/>
+						</div>
+					</div>
+					<div class="spacer"/>&nbsp;</div>
+					<div>
+						<input type="radio" name="card_type" id="url" value="url" onclick="select_card_type();"/>
+						<label for="url">URL и QR-код c URL</label>
+					</div>
+					<div>
+						<input type="radio" name="card_type" id="vcard" value="vcard" onclick="select_card_type();"/>
+						<label for="vcard">URL и QR-код с vCard</label>
+					</div>
+				</div>
+			</div>
+			
+			<div id="url_data">
+				<div class="spacer"/>&nbsp;</div>
+				
+				<div class="info">
+					<div>
+						Формирование URL личной страницы:
+					</div>
+					<div class="input">
+						<div>
+							<input type="radio" name="url_type" id="url_by_card_id" value="by_card_id" checked onclick="select_url_type();"/>
+							<label for="url_by_card_id">По номеру карты</label>
+						</div>
+						<div>
+							<input type="radio" name="url_type" id="url_user_defined" value="user_defined" onclick="select_url_type();"/>
+							<label for="url_user_defined">Вручную</label>
+						</div>
+					</div>
+				</div>
+				
+				<div id="url_page_data">
+					<div class="spacer"/>&nbsp;</div>
+					<div class="info">
+						<div>
+							Адрес личной страницы:
+						</div>
+						<div>
+							<input id="url_page" type="text" value="" oninput="update_url();"/>
+						</div>
+						<div class="note">
+							Допустимые символы: A...Z, a...z, 0...9;
+							<br/>
+							разделители: &laquo;.&raquo;, &laquo;_&raquo;, &laquo;-&raquo;.
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="vcard_data">
+			
+				<div class="spacer"/>&nbsp;</div>
+				
+				<div class="info" id="vcard_content">
+					<div>
+						Сборка vCard:
+					</div>
+					<div class="input">
+						<div>
+							<input type="radio" name="vcard_type" id="vcard_by_template" value="by_template" checked onclick="select_vcard_type();"/>
+							<label for="vcard_by_template">По шаблону</label>
+						</div>
+						<div>
+							<input type="radio" name="vcard_type" id="vcard_user_defined" value="user_defined" onclick="select_vcard_type();"/>
+							<label for="vcard_user_defined">Вручную</label>
+						</div>
+						<div class="note">
+							После сборки vCard по шаблону можно переключиться в ручной режим и добавить произвольные поля - см. <a href="https://tools.ietf.org/html/rfc6350">RFC 6350</a>.
+						</div>
+					</div>
+				</div>
+			
+				<div id="vcard_auto_switches">
+					<div class="spacer"/>&nbsp;</div>
+					<div class="info" id="vcard_content">
+						<div>
+							Автоподстановки в vCard:
+						</div>
+						<div class="input">
+							<input id="vcard_auto_add_url"   type="checkbox" checked onclick="change_vcard_auto_add_url();"/>
+							<label for="vcard_auto_add_url">Добавлять URL личной страницы</label>
+						</div>
+						<div class="input">
+							<input id="vcard_auto_copy_name" type="checkbox" checked onclick="change_vcard_auto_copy_name();"/>
+							<label for="vcard_auto_copy_name">Копировать имя из данных карты</label>
+						</div>
+					</div>
+				</div>
+				
+				<div id="vcard_fields">
+
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:FN<span id="vcard_fn_hint">&nbsp;(автоподстановка)</span></td>
+					                                                                                       <td class="right">Полное имя</td>       </tr></table></div><input id="vcard_fn"    type="text" value="Юрий Яковлев"           oninput="update_vcard_fn();"/></div>
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:EMAIL</td><td class="right">Электропочта</td>     </tr></table></div><input id="vcard_email" type="text" value="GMAIL_USER@gmail.com"       oninput="update_vcard();"/></div>
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:TEL</td>  <td class="right">Телефон #1</td>       </tr></table></div><input id="vcard_tel_1" type="text" value="+79130000000"               oninput="update_vcard();"/></div>
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:TEL</td>  <td class="right">Телефон #2</td>       </tr></table></div><input id="vcard_tel_2" type="text" value=""                           oninput="update_vcard();"/></div>
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:URL</td>  <td class="right">Интернет-адрес #1</td></tr></table></div><input id="vcard_url_1" type="text" value="https://t.me/TELEGRAM_USER" oninput="update_vcard();"/></div>
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:URL</td>  <td class="right">Интернет-адрес #2</td></tr></table></div><input id="vcard_url_2" type="text" value=""                           oninput="update_vcard();"/></div>
+					
+					<div class="spacer"/>&nbsp;</div>
+					<div class="info">
+						<div><table class="vcard-field"><tr><td class="left">vCard:ADR</td><td class="right">Адрес</td></tr></table></div>
+						<input id="vcard_addr"  type="text" value=";;;Новосибирск"            oninput="update_vcard();"/>
+						
+						<table class="location" width="100%">
+							<tr>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;Академгородок;Новосибирск' );">Академгородок</button>
+								</td>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;;Бердск;Новосибирская область' );">Бердск</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;;Кольцово;Новосибирская область' );">Кольцово</button>
+								</td>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;;Краснообск;Новосибирская область' );">Краснообск</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;;Мочище;Новосибирская область' );">Мочище</button>
+								</td>
+								<td>
+									<button class="location" type="button" onclick="vcard_set_addr( ';;;Новосибирск' );">Новосибирск</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+					<div class="spacer"/>&nbsp;</div><div class="info"><div><table class="vcard-field"><tr><td class="left">vCard:NOTE</td><td class="right">Прочие данные</td></tr></table></div>    <input id="vcard_note"  type="text" value=""                          oninput="update_vcard();"/></div>
+
+				</div>
+				
+				<div class="spacer"/>&nbsp;</div>
+				<div id="vcard_raw">
+					<div class="info">
+						<div>Содержимое vCard:</div>
+						<textarea id="vcard_raw_data" rows="10" cols="40" oninput="check_input();" xreadonly></textarea>
+					</div>
+				</div>
+			</div>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<button id="save_card" onclick="save();">Сохранить</button>
+			<div class="spacer"/>&nbsp;</div>
+		
+			<button id="show_card" onclick="view();">Показать</button>
+
+			<div id="editor_warning" class="warning">
+				Простите, не все поля корректно заполнены.
+				<br/>
+				Генерация и предпросмотр карты невозможны.
+			</div>
+		</div>
+		
+		<div class="webapp-plane" id="load">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<button class="main back" onclick="back();"><img src="./back.png"/ width="32" height="32"></button>
+					</td>
+					<td class="title">Загрузчик</td>
+				</tr>
+			</table>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<textarea id="card_data_loader" rows="10" cols="40" xoninput="decode_card_data();" placeholder="Пожалуйста, вставьте текст с данными карты."></textarea>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<button onclick="read();">Загрузить</button>
+			<div class="spacer"/>&nbsp;</div>
+			<button onclick="clear_loader();">Очистить</button>
+		</div>
+		
+		<div class="webapp-plane" id="save">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<button class="main back" onclick="back();"><img src="./back.png"/ width="32" height="32"></button>
+					</td>
+					<td class="title">Сохранение</td>
+				</tr>
+			</table>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				<textarea id="card_data_saver" rows="20" cols="40" readonly></textarea>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<button onclick="copy();">Скопировать</button>
+			
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info">
+				Пожалуйста, вышлите данные на один из следующих адресов:
+				<table class="contacts" width="100%">
+					<tr class="contact"><td class="type">Telegram:</td><td>@<a href="tg://resolve?domain=m_shar">m_shar</a> (<a href="https://t.me/m_shar">https://t.me/m_shar</a>)</td></tr>
+					<tr class="contact"><td class="type">e-mail:</td><td><a href="mailto:mikhail.sharoglazov@gmail.com?subject=LPR%20Card%20Data">mikhail.sharoglazov@gmail.com</a></td></tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="webapp-plane" id="view">
+			<table class="header">
+				<tr>
+					<td class="button">
+						<button class="main back" onclick="back();"><img src="./back.png"/ width="32" height="32"></button>
+					</td>
+					<td class="title">Предпросмотр</td>
+				</tr>
+			</table>
+			<div class="spacer"/>&nbsp;</div>
+
+			<div class="info" id="vcard_content">
+				<div class="centered">
+					Лицевая сторона:
+				</div>
+				<div class="spacer"/>&nbsp;</div>
+					
+				<div id="card-face">&nbsp;</div>
+				<div>&nbsp;</div>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<div class="info" id="vcard_content">
+				<div class="centered">
+					Оборотная сторона:
+				</div>
+				<div class="spacer"/>&nbsp;</div>
+					
+				<div id="card-back">&nbsp;</div>
+				<div>&nbsp;</div>
+			</div>
+			<div class="spacer"/>&nbsp;</div>
+			<button id="save_card" onclick="save();">Сохранить</button>
+		</div>
+	</body>
+
+	<script>
+		bootstrap();
+	</script>
+</html>
+
