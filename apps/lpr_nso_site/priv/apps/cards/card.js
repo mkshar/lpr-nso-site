@@ -22,7 +22,7 @@ function make_face( first_name, last_name, id, status, transliteration_variant )
 				"width=\"100%\"",
 				tr
 				(
-					td( "width=\"50%\"", "<img class=\"logo\" src=\"/logo/LPR-logo-mod.svg\" style=\"width: 34mm; margin-top: 3mm; margin-left: 3.5mm;\"/>" ) +
+					td( "width=\"50%\"", "<img class=\"logo\" src=\"/logo/LPR-mod.white-circle.svg\" style=\"width: 34mm; margin-top: 3mm; margin-left: 3.5mm;\"/>" ) +
 					td
 					(
 						"style=\"vertical-align: top;\"",
