@@ -1,0 +1,188 @@
+<html lang="ru">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" href="../lib/ISO-216.css"/>
+		
+		<title>Конструктор бейджей v0.2</title>
+		
+		<style>
+			/* CSS Reset */
+			*, *:after, *:before
+			{
+				box-sizing: border-box;
+				padding: 0;
+				margin: 0;
+			}
+
+
+			@font-face
+			{
+				font-family: ReformaGroteskDemiC;
+				src: url( "ReformaGroteskDemiC-Regular.otf" ) format( "opentype" );
+			}
+
+			body { background-color: gray; }
+			
+			@media print { body { background-color: white; } }
+
+			.inverted { transform: rotate( 180deg ); border-top: 1px solid black; }
+
+			div.badge
+			{
+				margin: auto;
+				font-family: "ReformaGroteskDemiC";
+				/*line-height: 4.5mm;*/
+				line-height: normal;
+				/*border: 1px solid black;*/
+				background-color: white;
+				/*border-radius: 1mm;*/
+				text-align: center;
+				/*float: left;*/
+				display: inline-block;
+			}
+			
+			div.two-sides { margin: 10pt 0; border-collapse: collapse; /*backface-visibility: hidden;*/ /*float: none; */ display: block; text-align: center; float: left; }
+			@media print { div.badge { border: 1px dashed black; } div.back { border-left: 0px solid white; } .normal { margin-bottom: 0; border-top: 0px solid white; } div.two-sides { float: left; margin: 10pt 0; /*backface-visibility: hidden;*/ }  }
+			@media print {  .inverted {  border-top: 20px solid red; transform: translate( 0pt, 1px ) /*rotate( 180deg )*/; } }
+			@media screen { .back { border-left: 1px solid black; } }
+			@media print  { .back { border-left: 0px solid white; } .face { border-right: 0px solid white; } }
+			
+			div.badges { /*border-collapse: collapse; backface-visibility: hidden;*/ }
+
+			div.position { height: 75mm; }
+			td.position { text-transform: uppercase; }
+			div.position-org { text-transform: uppercase; font-size: 14mm; margin-bottom: -2mm; }
+			div.position-org-small { text-transform: uppercase; font-size: 7mm; margin-top: -2mm; margin-bottom: -1mm; }
+			div.position-proxy { text-transform: uppercase; font-size: 11mm; margin-top: 0mm; margin-bottom: -2mm; }
+			div.position-proxy-small { text-transform: uppercase; font-size: 7mm; margin-bottom: -2mm; }
+
+			*.name { font-size: 12mm; text-align: left; }
+
+			table { width: 100%; }
+			td { text-align: center; }
+			/*td.logo-container { width: 30mm; text-align: right; }*/
+			div.logo-container { width: 75mm; text-align: center; }
+			img.logo { width: 75mm; height: 75mm; }
+
+			td.name { text-align: center; line-height: 85%; /*border: 1px solid black;*/ }
+
+			div.form { font-family: Verdana, Arial; background-color: white; padding: 2pt; text-align: left; width: 320pt; margin: auto; margin-top: 10pt; }
+			div.format { padding-left: 10pt; }
+			*.fullside { width: 100%; }
+		</style>
+
+		<script>
+			
+			function hr() { return "<hr/>"; }
+			function br() { return "<br/>"; }
+			function table( args,   contents ) { return "<table" + ( contents == null ? ( ">" + args ) : ( " " + args + ">" + contents ) ) + "</table>"; }
+			function tr   ( args,   contents ) { return "<tr" + ( contents == null ? ( ">" + args ) : ( " " + args + ">" + contents ) ) + "</tr>"; }
+			function td   ( args,   contents ) { return "<td" + ( contents == null ? ( ">" + args ) : ( " " + args + ">" + contents ) ) + "</td>"; }
+			function div  ( class_, contents ) { return "<div class=\"" + class_ + "\">" + contents + "</div>"; }
+			function span ( class_, contents ) { return "<span class=\"" + class_ + "\">" + contents + "</span>"; }
+			
+			function make_badge( first_name, last_name, title, double_sided )
+			{
+				return div( "two-sides", make_badge_side( first_name, last_name, title, false ) + ( double_sided ? make_badge_side( first_name, last_name, title, true ) : "" ) );
+			}
+			function make_badge_side( first_name, last_name, title, back )
+			{
+				var res = div
+					(
+						"badge ISO-216-A7-portrait" + ( back ? " back" : " face" ),
+						div( "logo-container", "<img class=\"logo\" src=\"../logo/LPR.svg\"/>" ) +
+						div( "position", title )
+					);
+				//alert( res );
+				return res;
+			}
+			function make_title( title )
+			{
+				if( title.toLowerCase() == "организатор" )
+					return div( "position-org", "Организатор") + div( "position-org-small", "публичного мероприятия" );
+				else
+					return div( "position-proxy", title ) + div( "position-proxy-small", "по организации" ) + div( "position-proxy-small", "публичного мероприятия" );
+			}
+			
+			function generate()
+			{
+				var double_sided = document.getElementById( "double" ).checked;
+				document.getElementById( "form" ).style.display = "none";
+				var lines = document.getElementById( "people" ).value.trim().split( "\n" );
+				var i;
+				for( i = 0; i != lines.length; ++i )
+				{
+					var components = ( lines[i] == "" ) ? [ "уполномоченный", "Имя", "Фамилия" ] : lines[ i ].trim().split( " " );
+					document.getElementById( "badges" ).innerHTML += make_badge( components[ 1 ], components[ 2 ], make_title( components[ 0 ] ), double_sided );
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<!--<div>ISO 216 / B8 (62 mm × 88 mm) / landscape</div>-->
+		<div id="form" class="form">
+			<div>
+				Пожалуйста, введите данные организаторов и уполномоченных в следующем формате:
+				<div class="format">
+					статус Имя Фамилия
+				</div>
+				Например:
+				<div class="format">
+					организатор Иван Петров
+				</div>
+				<div class="format">
+					уполномоченная Мария Федотова
+				</div>
+				<div class="format">
+					уполномоченный Петр Иванов
+				</div>
+			</div>
+			<br/>
+			<textarea class="fullside" id="people" rows="10" cols="40" xoninput="check_input();">
+организатор Иван Петров
+уполномоченная Мария Федотова
+уполномоченный Петр Иванов
+			</textarea>
+			<br/>
+			<input type="checkbox" id="double" name="double" checked/><label for="double">Печатать две стороны</label>
+			<br/>
+			<button class="fullside" onclick="document.getElementById( 'people' ).value = '';">Очистить</button>
+			<br/>
+			<button class="fullside" onclick="generate();">Отрисовать!</button>
+		</div>
+		<div id="badges" class="badges">
+		</div>
+	</body>
+	<script>
+		document.getElementById( "people" ).focus();
+// 		alert("waiting for drawing completion");
+// 		var badges = document.getElementsByClassName( "badge" );
+// 		var i;
+// 		for( i = 0; i != badges.length; ++i )
+// 		{
+// 			var badge_width = badges[i].getBoundingClientRect().width;
+// 			var logo = badges[i].getElementsByClassName( "logo" )[0];
+// 			var logo_width = logo.getBoundingClientRect().width;
+// 			var names = badges[i].getElementsByTagName( "span" );
+// 			var max_name_width = 0;
+// 			var j;
+// 			for( j = 0; j != names.length; ++j )
+// 			{
+// 				var width = names[j].getBoundingClientRect().width;
+// 				//alert( names[j].getBoundingClientRect().width );
+// 				if( max_name_width < width )
+// 					max_name_width = width;
+// 			}
+// 			console.log( "badge: " + badge_width + ", logo: " + logo_width + ", max: " + max_name_width );
+// 			//badges[i].getElementsByClassName( "logo-container" )[0].
+// 			var margin = ( badge_width - logo_width - max_name_width ) / 3;
+// 			console.log( margin );
+// 			console.log( logo.parentElement.style.width );
+// 			logo.parentElement.style.width = "" + ( margin + logo_width ) + "px";
+// 			logo.parentElement.style.textAlign = "right";
+// 			console.log( logo.parentElement.style.width );
+// 		}
+	</script>
+</html>
